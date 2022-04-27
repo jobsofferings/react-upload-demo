@@ -1,0 +1,58 @@
+@import (reference) './variables.less';
+@import (reference) '~antd/dist/antd.less';
+
+.flex-between() {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-inline-between() {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-inline-align-items-center() {
+  display: inline-flex;
+  align-items: center;
+}
+
+.flex-align-items-center() {
+  display: flex;
+  align-items: center;
+}
+
+.flex-center() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-inline-center() {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.full-absolute() {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.truncate(@width) {
+  width: @width;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.default-backgroud() {
+  margin: @margin-lg 0;
+  padding: @margin-lg;
+  background-color: #fff;
+  border-radius: 4px;
+}

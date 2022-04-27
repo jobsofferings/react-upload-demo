@@ -1,18 +1,29 @@
-import { ConfigProvider, Upload } from 'antd';
-import { ApolloProvider } from 'react-apollo';
-import antdConfig from './config/antdConfig';
-import apolloClient from 'src/apollo/apolloClient'
-import Clip from './page/clip';
-import './App.less';
+import React from 'react'
+import { Switch, BrowserRouter, Route } from 'react-router-dom'
+import { ConfigProvider } from 'antd'
+import antdConfig from 'src/config/antdConfig'
+import UploadSingle from './pages/Upload'
+import UploadLayout from './components/UploadLayout'
+import './App.less'
+
+export type useSitevarItemProps = string | useSitevarItemProps[]
+
+export type useSitevarProps = useSitevarItemProps[]
 
 const App = () => {
   return (
-    <ApolloProvider client={apolloClient}>
-      <ConfigProvider {...antdConfig}>
-        <Clip />
-      </ConfigProvider>
-    </ApolloProvider>
-  );
+    <ConfigProvider {...antdConfig}>
+      <BrowserRouter basename={'/'}>
+        <Switch>
+          <UploadLayout>
+            <Route path="/upload/single">
+              <UploadSingle />
+            </Route>
+          </UploadLayout>
+        </Switch>
+      </BrowserRouter>
+    </ConfigProvider>
+  )
 }
 
-export default App;
+export default App
