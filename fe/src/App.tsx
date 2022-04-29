@@ -19,6 +19,12 @@ const App = () => {
             <Route path="/upload/single">
               <UploadSingle />
             </Route>
+            <Route path="/upload/muti">
+              <UploadSingle />
+            </Route>
+            <Route path="/download">
+              <UploadSingle />
+            </Route>
           </UploadLayout>
         </Switch>
       </BrowserRouter>
