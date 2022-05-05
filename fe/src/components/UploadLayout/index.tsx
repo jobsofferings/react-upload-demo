@@ -30,7 +30,11 @@ const UploadLayout: React.FunctionComponent<UploadLayout> = ({ children }) => {
                   },
                   {
                     title: '拖拽上传',
-                    path: '/upload/draw',
+                    path: '/upload/dragger',
+                  },
+                  {
+                    title: '大文件上传',
+                    path: '/upload/large',
                   },
                 ],
               },

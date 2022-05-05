@@ -38,13 +38,24 @@ app.all('*', function (req, res, next) {
 
 app.post('/upload', upload.single('file'), (req: any, res) => {
   const responseList = req.files.map((file: any) => {
-    console.log(file.path);
     let oldName = file.path;
     let newName = file.path + path.parse(file.originalname).ext;
     fs.renameSync(oldName, newName);
     return BASIC_URL + path.basename(newName);
   })
-  console.log(responseList);
+  res.send({
+    responseList,
+    code: 200
+  })
+})
+
+app.post('/uploadLarge', upload.single('file'), (req: any, res) => {
+  const responseList = req.files.map((file: any) => {
+    let oldName = file.path;
+    let newName = file.path + path.parse(file.originalname).ext;
+    fs.renameSync(oldName, newName);
+    return BASIC_URL + path.basename(newName);
+  })
   res.send({
     responseList,
     code: 200
