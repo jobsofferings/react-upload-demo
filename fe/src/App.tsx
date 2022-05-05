@@ -2,8 +2,9 @@ import React from 'react'
 import { Switch, BrowserRouter, Route } from 'react-router-dom'
 import { ConfigProvider } from 'antd'
 import antdConfig from 'src/config/antdConfig'
-import UploadSingle from './pages/Upload'
 import UploadLayout from './components/UploadLayout'
+import UploadSingle from './pages/UploadSingle'
+import UploadMuti from './pages/UploadMuti'
 import './App.less'
 
 export type useSitevarItemProps = string | useSitevarItemProps[]
@@ -20,7 +21,7 @@ const App = () => {
               <UploadSingle />
             </Route>
             <Route path="/upload/muti">
-              <UploadSingle />
+              <UploadMuti />
             </Route>
             <Route path="/download">
               <UploadSingle />

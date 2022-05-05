@@ -24,7 +24,19 @@ const UploadLayout: React.FunctionComponent<UploadLayout> = ({ children }) => {
                     title: '单文件上传',
                     path: '/upload/single',
                   },
+                  {
+                    title: '多文件上传',
+                    path: '/upload/muti',
+                  },
+                  {
+                    title: '拖拽上传',
+                    path: '/upload/draw',
+                  },
                 ],
+              },
+              {
+                title: '下载',
+                path: '/download',
               },
             ]}
           />

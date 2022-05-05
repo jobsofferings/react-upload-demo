@@ -36,21 +36,9 @@ lerna-debug.log*
 # Build
 build
 
-#ENV
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Tsc Build File
-/src/**/*.js.map
-
 #config
-config/*
-proto
-proto.develop
-proto.stage
-proto.mirror
+upload
+
 dist
 /*.tar.gz
 tsconfig.build.tsbuildinfo

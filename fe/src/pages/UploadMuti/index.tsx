@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { Upload, Button, message } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
+import UploadResult from '../UploadResult'
 
-const UploadSingle = () => {
+const UploadMuti = () => {
   const [fileList, setFileList] = useState<any[]>([])
   const [uploading, setUploading] = useState(false)
+  const [result, setResult] = useState<string[]>([])
 
   const handleUpload = () => {
     const formData = new FormData()
@@ -17,8 +19,9 @@ const UploadSingle = () => {
       body: formData,
     })
       .then((res) => res.json())
-      .then(() => {
+      .then((res) => {
         setFileList([])
+        setResult(res?.responseList || [])
         message.success('upload successfully.')
       })
       .catch(() => {
@@ -36,17 +39,20 @@ const UploadSingle = () => {
     setFileList(newFileList)
   }
 
-  const beforeUpload = (file: any) => {
-    setFileList([...fileList, file])
+  const beforeUpload = (_: File, fileList: File[]) => {
+    setFileList(fileList)
     return false
   }
 
   return (
     <>
+      <h2>多文件上传</h2>
       <Upload
         fileList={fileList}
         onRemove={onRemove}
         beforeUpload={beforeUpload}
+        maxCount={9}
+        multiple
       >
         <Button icon={<UploadOutlined />}>Select File</Button>
       </Upload>
@@ -59,8 +65,9 @@ const UploadSingle = () => {
       >
         {uploading ? 'Uploading' : 'Start Upload'}
       </Button>
+      <UploadResult urlList={result} />
     </>
   )
 }
 
-export default UploadSingle
+export default UploadMuti
