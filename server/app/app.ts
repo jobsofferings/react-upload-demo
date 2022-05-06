@@ -12,11 +12,20 @@ const uploadDir = path.join(__dirname, defaultPath);
 
 const app: express.Application = express();
 
-const upload = multer({
+const baseConfig = {
   dest: uploadDir,
   limits: {
-    files: 9,
-    fieldSize: 2 * 1024 * 1024 // 2 MB
+    files: 9
+  }
+}
+
+const upload = multer(baseConfig)
+
+const uploadLarge = multer({
+  ...baseConfig,
+  limits: {
+    ...baseConfig.limits,
+    fieldSize: 2 * 1024 * 1024
   }
 })
 
@@ -49,7 +58,7 @@ app.post('/upload', upload.single('file'), (req: any, res) => {
   })
 })
 
-app.post('/uploadLarge', upload.single('file'), (req: any, res) => {
+app.post('/uploadLarge', uploadLarge.single('file'), (req: any, res) => {
   const responseList = req.files.map((file: any) => {
     let oldName = file.path;
     let newName = file.path + path.parse(file.originalname).ext;
