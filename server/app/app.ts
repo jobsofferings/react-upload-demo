@@ -58,7 +58,7 @@ app.post('/upload', upload.single('file'), (req: any, res) => {
   })
 })
 
-app.post('/uploadLarge', uploadLarge.single('file'), (req: any, res) => {
+app.post('/upload/large', uploadLarge.single('file'), (req: any, res) => {
   const responseList = req.files.map((file: any) => {
     let oldName = file.path;
     let newName = file.path + path.parse(file.originalname).ext;
