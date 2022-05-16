@@ -47,7 +47,7 @@ const UploadLarge = () => {
       fileMd5: fileMd5, // 文件MD5值
       fileSize: file.size, // 文件大小
       chunkSize: 1 * 1024 * 1024, // 分块大小
-      chunkIds: fileStatus.data.chunkIds, // 已上传的分块列表
+      chunkIds: fileStatus?.data?.chunkIds, // 已上传的分块列表
       poolLimit: 3, // 限制的并发数
     })
     await concatFiles('/upload/concatFiles', file.name, fileMd5)
@@ -112,7 +112,11 @@ const UploadLarge = () => {
 
   const concatFiles = (url: string, name: string, md5: any) => {
     return fetch(url, {
-      method: 'GET',
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         name,
         md5,
