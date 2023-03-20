@@ -54,7 +54,7 @@ const UploadMuti = () => {
         maxCount={9}
         multiple
       >
-        <Button icon={<UploadOutlined />}>Select File</Button>
+        <Button icon={<UploadOutlined />}>选择文件</Button>
       </Upload>
       <Button
         type="primary"
@@ -63,7 +63,7 @@ const UploadMuti = () => {
         loading={uploading}
         style={{ marginTop: 16 }}
       >
-        {uploading ? 'Uploading' : 'Start Upload'}
+        {uploading ? '上传中' : '开始上传'}
       </Button>
       <UploadResult urlList={result} />
     </>

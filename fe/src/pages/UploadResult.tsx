@@ -1,5 +1,5 @@
 import React from 'react'
-import { checkImgExistsByExt } from '@/utils'
+import { Row, Typography } from 'antd'
 import styles from './UploadResult.module.less'
 
 interface UploadResultProps {
@@ -10,11 +10,11 @@ const UploadResult = ({ urlList }: UploadResultProps) => {
   return (
     <div className={styles.result}>
       <h4>结果：</h4>
-      {urlList
-        .filter((item) => checkImgExistsByExt(item))
-        .map((item) => (
-          <img src={item} alt={item} key={item} />
-        ))}
+      {urlList.map((item) => (
+        <Row>
+          <Typography.Title level={5}>{item}</Typography.Title>
+        </Row>
+      ))}
     </div>
   )
 }

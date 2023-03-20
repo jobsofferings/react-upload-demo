@@ -64,9 +64,26 @@ app.post('/upload', upload.single('file'), (req: any, res) => {
 })
 
 app.post('/upload/large', uploadLarge.single('file'), (req: any, res) => {
-  res.send({
-    data: req.files,
-    code: 1
+  const {originalname, filename} = req?.files?.[0] || {}
+  const [md5, targetIndex] = originalname.split('-')
+  const oldPath = path.resolve(__dirname, uploadDir, filename)
+  const newPath = path.resolve(__dirname, uploadDir, md5, targetIndex)
+  dirExists(path.resolve(__dirname, uploadDir, md5)).then((exists: any) => {
+    fse.move(oldPath, newPath, (err: any) => {
+      if (err) {
+        res.send({
+          data: err,
+          message: '上传失败',
+          code: 0
+        })
+      } else {
+        res.send({
+          data: req.files,
+          message: '上传成功',
+          code: 1
+        })
+      }
+    })
   })
 })
 
@@ -104,9 +121,6 @@ app.get('/upload/exists', async (req: any, res: any) => {
 
 app.post('/upload/concatFiles', async (req: any, res) => {
   const { name: fileName, md5: fileMd5 } = req.body;
-  console.log(fileName)
-  console.log(fileMd5)
-  console.log(path.join(uploadDir, fileMd5))
   await concatFiles(
     path.join(uploadDir, fileMd5),
     path.join(uploadDir, fileName)
@@ -139,6 +153,7 @@ async function concatFiles(sourceDir: string, targetPath: string) {
     await readFile(filePath, writeStream);
     await unlink(filePath); // 删除已合并的分块
   }
+  await fs.rmdirSync(sourceDir)
   writeStream.end();
 }
 
@@ -154,3 +169,55 @@ app.listen(port, function () {
 });
 
 module.exports = app;
+
+function mkdir(dir: string) {
+  return new Promise((resolve, reject) => {
+    fse.mkdir(dir, (err: any) => {
+      if (err) {
+        resolve(false);
+      } else {
+        resolve(true);
+      }
+    })
+  })
+}
+
+function getStat(path: string) {
+  return new Promise((resolve, reject) => {
+    fs.stat(path, (err, stats) => {
+      if (err) {
+        resolve(false);
+      } else {
+        resolve(stats);
+      }
+    })
+  })
+}
+
+
+async function dirExists(dir: string) {
+  let isExists = await getStat(dir) as false | fs.Stats;
+  //如果该路径且不是文件，返回true
+  if (isExists && isExists.isDirectory()) {
+    return true;
+  } else if (isExists) {
+    //如果该路径存在但是文件，返回false
+    return false;
+  }
+  //如果该路径不存在，拿到上级路径
+  let tempDir = path.parse(dir).dir;
+  //递归判断，如果上级目录也不存在，则会代码会在此处继续循环执行，直到目录存在
+  let status = await dirExists(tempDir);
+  let mkdirStatus;
+  if (status) {
+    mkdirStatus = await mkdir(dir);
+  }
+  return mkdirStatus;
+}
+
+function copyFile(sourcePath: string, targetPath: string){
+  let rs = fs.createReadStream(sourcePath)
+  let ws = fs.createWriteStream(targetPath)
+  
+  rs.pipe(ws)
+}

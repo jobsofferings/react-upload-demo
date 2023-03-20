@@ -54,11 +54,17 @@ const UploadLarge = () => {
         chunkIds: fileStatus?.data?.chunkIds, // 已上传的分块列表
         poolLimit: 3, // 限制的并发数
       })
-      await concatFiles(
+      concatFiles(
         'http://localhost:3001/upload/concatFiles',
         file.name,
         fileMd5,
       )
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   }
 
@@ -109,7 +115,7 @@ const UploadLarge = () => {
     fileMd5,
     fileName,
   }: iUploadChunkProps) {
-    let formData = new FormData()
+    const formData = new FormData()
     formData.set('file', chunk, fileMd5 + '-' + chunkIndex)
     console.log(fileMd5 + '-' + chunkIndex)
     formData.set('name', fileName)
@@ -155,7 +161,7 @@ const UploadLarge = () => {
         beforeUpload={beforeUpload}
         maxCount={1}
       >
-        <Button icon={<UploadOutlined />}>Select File</Button>
+        <Button icon={<UploadOutlined />}>选择文件</Button>
       </Upload>
       <Button
         type="primary"
@@ -164,7 +170,7 @@ const UploadLarge = () => {
         loading={uploading}
         style={{ marginTop: 16 }}
       >
-        {uploading ? 'Uploading' : 'Start Upload'}
+        {uploading ? '上传中' : '开始上传'}
       </Button>
       <UploadResult urlList={result} />
     </>

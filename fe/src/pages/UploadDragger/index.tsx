@@ -50,13 +50,14 @@ const UploadDragger = () => {
     <>
       <h2>拖拽上传</h2>
       <Dragger
+        style={{ width: '100%', height: '200px !important' }}
         fileList={fileList}
         onRemove={onRemove}
         beforeUpload={beforeUpload}
         maxCount={9}
         multiple
       >
-        <Button icon={<UploadOutlined />}>Drag File</Button>
+        <Button icon={<UploadOutlined />}>拖拽上传</Button>
       </Dragger>
       <Button
         type="primary"
@@ -65,7 +66,7 @@ const UploadDragger = () => {
         loading={uploading}
         style={{ marginTop: 16 }}
       >
-        {uploading ? 'Uploading' : 'Start Upload'}
+        {uploading ? '上传中' : '开始上传'}
       </Button>
       <UploadResult urlList={result} />
     </>
