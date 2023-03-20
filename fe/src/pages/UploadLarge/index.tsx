@@ -34,23 +34,32 @@ const UploadLarge = () => {
     })
     const [file] = fileList
     const fileMd5 = await calcFileMD5(file)
+    // 判断文件是否已存在
     const fileStatus: any = await checkFileExist(
-      // 判断文件是否已存在
-      '/upload/exists',
+      'http://localhost:3001/upload/exists',
       file.name,
       fileMd5,
     )
-    setUploading(true)
-    await upload({
-      url: 'http://localhost:3001/upload/large',
-      file, // 文件对象
-      fileMd5: fileMd5, // 文件MD5值
-      fileSize: file.size, // 文件大小
-      chunkSize: 1 * 1024 * 1024, // 分块大小
-      chunkIds: fileStatus?.data?.chunkIds, // 已上传的分块列表
-      poolLimit: 3, // 限制的并发数
-    })
-    await concatFiles('/upload/concatFiles', file.name, fileMd5)
+    if (fileStatus.data && fileStatus.data.isExists) {
+      alert('文件已上传[秒传]')
+      return
+    } else {
+      setUploading(true)
+      await upload({
+        url: 'http://localhost:3001/upload/large',
+        file, // 文件对象
+        fileMd5: fileMd5, // 文件MD5值
+        fileSize: file.size, // 文件大小
+        chunkSize: 1 * 1024 * 1024, // 分块大小
+        chunkIds: fileStatus?.data?.chunkIds, // 已上传的分块列表
+        poolLimit: 3, // 限制的并发数
+      })
+      await concatFiles(
+        'http://localhost:3001/upload/concatFiles',
+        file.name,
+        fileMd5,
+      )
+    }
   }
 
   const upload = ({
@@ -102,6 +111,7 @@ const UploadLarge = () => {
   }: iUploadChunkProps) {
     let formData = new FormData()
     formData.set('file', chunk, fileMd5 + '-' + chunkIndex)
+    console.log(fileMd5 + '-' + chunkIndex)
     formData.set('name', fileName)
     formData.set('timestamp', Date.now().toString())
     return fetch(url, {

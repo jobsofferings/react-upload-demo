@@ -35,11 +35,5 @@ lerna-debug.log*
 
 # Build
 build
-
-#config
-upload
-tmp
-
 dist
 /*.tar.gz
-tsconfig.build.tsbuildinfo

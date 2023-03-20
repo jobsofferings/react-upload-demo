@@ -91,5 +91,5 @@ export function asyncPool(
 export function checkFileExist(url: string, name: string, md5: any) {
   return fetch(`${url}?name=${name}&md5=${md5}`, {
     method: 'GET',
-  })
+  }).then((res) => res.json())
 }
